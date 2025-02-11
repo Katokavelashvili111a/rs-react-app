@@ -1,7 +1,13 @@
 import React from "react";
+import Card from "./Card"; // Import Card component
+
+interface Pokemon {
+  name: string;
+  url: string; // Ensure each Pokémon has a URL
+}
 
 interface CardListProps {
-  results: any[];
+  results: Pokemon[];
 }
 
 const CardList: React.FC<CardListProps> = ({ results }) => {
@@ -11,13 +17,12 @@ const CardList: React.FC<CardListProps> = ({ results }) => {
 
   return (
     <div className="card-list">
-      {results.map((pokemon) => (
-        <div className="card" key={pokemon.name}>
-          <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.url.split("/")[6]}.png`} alt={pokemon.name} />
+      {results.map((pokemon) => {
+        const urlParts = pokemon.url.split("/");
+        const pokemonId = urlParts[urlParts.length - 2]; // Ensure safe extraction
 
-          <h3>{pokemon.name}</h3>
-        </div>
-      ))}
+        return <Card key={pokemon.name} pokemonName={pokemon.name} pokemonId={pokemonId} />;
+      })}
     </div>
   );
 };
